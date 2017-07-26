@@ -1,37 +1,37 @@
 #!/bin/bash
 
 # allow all docker hosts to our X server
-xhost + 172.17.0
+# xhost + 172.17.0
 
 # start docker and emacs
-docker run -d \
-      -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-      -v ${PWD}/project:/project \
-      -e DISPLAY=unix${DISPLAY} \
-      -p 5000:5000 \
-      --device /dev/snd \
-      --name docker-vscode \
-      --entrypoint "urxvt" \
-      cmiles74/docker-vscode
+# docker run -d \
+#       -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+#       -v ~/projects:/projects \
+#       -e DISPLAY=unix${DISPLAY} \
+#       -p 5000:5000 \
+#       --device /dev/snd \
+#       --name docker-vscode \
+#       --entrypoint "urxvt" \
+#       cmiles74/docker-vscode
 
 # alternatively, you can map your settings into the container
-# docker run -it \
-#        -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-#        -v ${HOME}/.config/Code:/developer/.config/Code \
-#        -v ${HOME}/.vscode:/developer/.vscode \
-#        -v ${HOME}/.ssh:/developer/.ssh \
-#        -v ${HOME}/.gitconfig:/developer/.gitconfig \
-#        -v ${PWD}/project:/project \
-#        -v ${SSH_AUTH_SOCK}:/ssh_auth_sock \
-#        -e SSH_AUTH_SOCK=/ssh_auth_sock \
-#        -e DISPLAY=unix${DISPLAY} \
-#        -p 5000:5000 \
-#        --device /dev/snd \
-#        --name docker-vscode \
-#        --entrypoint "xterm" \
-#        cmiles74/docker-vscode
+docker run -it \
+       -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+       -v ${HOME}/.config/Code:/developer/.config/Code \
+       # -v ${HOME}/.vscode:/developer/.vscode \
+       -v ${HOME}/.ssh:/developer/.ssh \
+       -v ${HOME}/.gitconfig:/developer/.gitconfig \
+       -v ${HOME}/projects:/projects \
+       -v ${SSH_AUTH_SOCK}:/ssh_auth_sock \
+       -e SSH_AUTH_SOCK=/ssh_auth_sock \
+       -e DISPLAY=unix${DISPLAY} \
+       -p 5000:5000 \
+       --device /dev/snd \
+       --name docker-vscode \
+       --entrypoint "xterm" \
+       jzillioux/docker-vscode
 
 docker exec docker-vscode /developer/bin/start-vscode
-docker exec docker-vscode /developer/bin/start-emacs
+# docker exec docker-vscode /developer/bin/start-emacs
 
 

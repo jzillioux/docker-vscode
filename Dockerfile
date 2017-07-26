@@ -1,13 +1,12 @@
 from microsoft/dotnet:latest
-#from cmiles74/dotnet:latest
 
 # get add-apt-repository
 run apt-get update
 run apt-get -y --no-install-recommends install software-properties-common curl apt-transport-https
 
 # add SQL Server tools PPA
-# run curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-# run curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | tee /etc/apt/sources.list.d/msprod.list
+run curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+run curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | tee /etc/apt/sources.list.d/msprod.list
 
 # add nodejs ppa
 run curl -sL https://deb.nodesource.com/setup_4.x | bash -
@@ -16,14 +15,14 @@ run curl -sL https://deb.nodesource.com/setup_4.x | bash -
 run apt-get update
 
 # vscode dependencies
-run apt-get -y --no-install-recommends install libc6-dev libgtk2.0-0 libgtk-3-0 libpango-1.0-0 libcairo2 libfontconfig1 libgconf2-4 libnss3 libasound2 libxtst6 unzip libglib2.0-bin libcanberra-gtk-module libgl1-mesa-glx curl build-essential gettext libstdc++6 software-properties-common wget git xterm automake libtool autogen nodejs libnotify-bin aspell aspell-en htop git emacs mono-complete gvfs-bin libxss1 rxvt-unicode-256color x11-xserver-utils sudo vim
+run apt-get -y --no-install-recommends install libc6-dev libgtk2.0-0 libgtk-3-0 libpango-1.0-0 libcairo2 libfontconfig1 libgconf2-4 libnss3 libasound2 libxtst6 unzip libglib2.0-bin libcanberra-gtk-module libgl1-mesa-glx curl build-essential gettext libstdc++6 software-properties-common wget git xterm automake libtool autogen nodejs libnotify-bin aspell aspell-en htop mono-complete gvfs-bin libxss1 rxvt-unicode-256color x11-xserver-utils sudo vim nano
 
 # MS SQL Server tools
 #
 # This doesn't work because it makes you agree to a license agreement. I've
 # tried "yes" but to no avail.
 #
-# run apt-get install mssql-tools
+run apt-get install -y mssql-tools unixodbc-dev
 
 # update npm
 run npm install npm -g
@@ -34,12 +33,12 @@ run dpkg -i vscode-amd64.deb
 run rm vscode-amd64.deb
 
 # install flat plat theme
-run wget 'https://github.com/nana-4/Flat-Plat/releases/download/3.20.20160404/Flat-Plat-3.20.20160404.tar.gz'
-run tar -xf Flat-Plat*
-run mv Flat-Plat /usr/share/themes
-run rm Flat-Plat*gz
-run mv /usr/share/themes/Default /usr/share/themes/Default.bak
-run ln -s /usr/share/themes/Flat-Plat /usr/share/themes/Default
+# run wget 'https://github.com/nana-4/Flat-Plat/releases/download/3.20.20160404/Flat-Plat-3.20.20160404.tar.gz'
+# run tar -xf Flat-Plat*
+# run mv Flat-Plat /usr/share/themes
+# run rm Flat-Plat*gz
+# run mv /usr/share/themes/Default /usr/share/themes/Default.bak
+# run ln -s /usr/share/themes/Flat-Plat /usr/share/themes/Default
 
 # install hack font
 run wget 'https://github.com/chrissimpkins/Hack/releases/download/v2.020/Hack-v2_020-ttf.zip'
@@ -79,8 +78,8 @@ run ln -s /developer/.local/share/firefox/firefox /developer/bin/x-www-browser
 run ln -s /developer/.local/share/firefox/firefox /developer/bin/gnome-www-browser
 
 # copy in test project
-copy project /developer/project
-workdir /developer/project
+copy project /developer/projects
+workdir /developer/projects
 
 # setup our ports
 expose 5000
@@ -88,9 +87,9 @@ expose 3000
 expose 3001
 
 # install spacemacs
-user developer
-workdir /developer
-run git clone --recursive https://github.com/syl20bnr/spacemacs ~/.emacs.d
+# user developer
+# workdir /developer
+# run git clone --recursive https://github.com/syl20bnr/spacemacs ~/.emacs.d
 
 # set environment variables
 env PATH /developer/.npm/bin:$PATH
@@ -98,11 +97,24 @@ env NODE_PATH /developer/.npm/lib/node_modules:$NODE_PATH
 env BROWSER /developer/.local/share/firefox/firefox-bin
 env SHELL /bin/bash
 
+# Install vscode extensions
+user developer
+run code --install-extension PeterJausovec.vscode-docker
+run code --install-extension christian-kohler.path-intellisense
+run code --install-extension donjayamanne.githistory
+run code --install-extension donjayamanne.python
+run code --install-extension foxundermoon.shell-format
+run code --install-extension magicstack.MagicPython
+run code --install-extension ms-mssql.mssql
+run code --install-extension ms-vscode.sublime-keybindings
+run code --install-extension rogalmic.bash-debug
+run code --install-extension shakram02.bash-beautify
+
 # mount points
 volume ["/developer/.config/Code"]
 volume ["/developer/.vscode"]
 volume ["/developer/.ssh"]
-volume ["/developer/project"]
+volume ["/developer/projects"]
 
 # start vscode
 entrypoint ["/developer/bin/start-shell"]

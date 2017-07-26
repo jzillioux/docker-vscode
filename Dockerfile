@@ -15,14 +15,14 @@ run curl -sL https://deb.nodesource.com/setup_4.x | bash -
 run apt-get update
 
 # vscode dependencies
-run apt-get -y --no-install-recommends install libc6-dev libgtk2.0-0 libgtk-3-0 libpango-1.0-0 libcairo2 libfontconfig1 libgconf2-4 libnss3 libasound2 libxtst6 unzip libglib2.0-bin libcanberra-gtk-module libgl1-mesa-glx curl build-essential gettext libstdc++6 software-properties-common wget git xterm automake libtool autogen nodejs libnotify-bin aspell aspell-en htop mono-complete gvfs-bin libxss1 rxvt-unicode-256color x11-xserver-utils sudo vim nano
+run apt-get -y --no-install-recommends install libc6-dev libgtk2.0-0 libgtk-3-0 libpango-1.0-0 libcairo2 libfontconfig1 libgconf2-4 libnss3 libasound2 libxtst6 unzip libglib2.0-bin libcanberra-gtk-module libgl1-mesa-glx curl build-essential gettext libstdc++6 software-properties-common wget git xterm automake libtool autogen nodejs libnotify-bin aspell aspell-en htop mono-complete gvfs-bin libxss1 rxvt-unicode-256color x11-xserver-utils sudo vim nano libxkbfile1
 
 # MS SQL Server tools
 #
 # This doesn't work because it makes you agree to a license agreement. I've
 # tried "yes" but to no avail.
 #
-run apt-get install -y mssql-tools unixodbc-dev
+# run apt-get install -y mssql-tools unixodbc-dev
 
 # update npm
 run npm install npm -g
@@ -30,6 +30,7 @@ run npm install npm -g
 # install vscode
 run wget -O vscode-amd64.deb  https://go.microsoft.com/fwlink/?LinkID=760868
 run dpkg -i vscode-amd64.deb
+run apt-get install -f
 run rm vscode-amd64.deb
 
 # install flat plat theme
